@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Serviços</title>
+</head>
+<body>
+<h1>Resposta dos Serviços</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Serviço</th>
+        <th>Resposta</th>
+        <th>Tempo (ms)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="serviceResponse : ${responseBFFVO.serviceResponses}">
+        <tr>
+            <td th:text="${serviceResponse.serviceName}">Serviço</td>
+            <td th:text="${serviceResponse.response}">Resposta</td>
+            <td th:text="${serviceResponse.responseTime}">Tempo</td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+
+
+<p>Tempo carregamento página: <th:block th:text="${total}"></th:block> ms</p>
+</body>
+</html>

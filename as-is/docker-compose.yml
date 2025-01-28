@@ -11,7 +11,7 @@ services:
     environment:
       - WIREMOCK_URL=http://wiremock:8080  # A URL do WireMock
     ports:
-      - "8081:8080"  # Expondo a porta 8080 da aplicação principal para o host
+      - "8081:8081"  # Expondo a porta 8080 da aplicação principal para o host
 
   wiremock:
     image: wiremock/wiremock:2.35.0
