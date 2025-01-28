@@ -1,0 +1,11 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/servico-2/resposta"
+  },
+  "response": {
+    "status": 200,
+    "body": "Resposta mockada 2",
+    "fixedDelayMilliseconds": 1500
+  }
+}
