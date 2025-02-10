@@ -7,8 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,17 +24,16 @@ public class ProvaConceitoAsItApplication {
 	@Controller
 	public class ServicoController {
 
-		private final WebClient webClient;
+		private final String wiremockUrl;
 
-		public ServicoController(WebClient.Builder webClientBuilder
-								 ,@Value("${WIREMOCK_URL}") String wiremockUrl) {
+		public ServicoController(@Value("${WIREMOCK_URL}") String wiremockUrl) {
 			// Configura o WebClient com a URL do WireMock
-			this.webClient = webClientBuilder.baseUrl(wiremockUrl).build();
+			this.wiremockUrl = wiremockUrl;
 		}
 
 		@GetMapping({"/", "/home"})
 		public String home(Model model) {
-			List<Mono<ResponseBFFVO.ServiceResponse>> requestsBff = new ArrayList<>();
+			List<ResponseBFFVO.ServiceResponse> requestsBff = new ArrayList<>();
 
 			StopWatch swTotal = new StopWatch("total");
 			swTotal.start();
@@ -44,40 +42,22 @@ public class ProvaConceitoAsItApplication {
 			IntStream.rangeClosed(1, 4).boxed().forEach(i -> {
 				StopWatch swBFF = getStopWatch(i);
 
-				requestsBff.add(
-						webClient.get()
-								.uri(getUrl(i))
-								.retrieve()
-								.bodyToMono(String.class)
-								.map(resposta -> {
-									swBFF.stop();
+				// Realiza as requisições para os serviços mockados
+				String url = getUrl(i);
+				String resposta = new RestTemplate().getForObject(url, String.class);
+				swBFF.stop();
 
-									return new ResponseBFFVO.ServiceResponse(
+				requestsBff.add(new ResponseBFFVO.ServiceResponse(
 											"Servico " + i,
 											resposta,
-											swBFF.getTotalTimeMillis()
-									);
-								})
-				);
+											swBFF.getTotalTimeMillis()));
 			});
 
-			// Retorna a tabela formatada assim que todas as requisições forem completadas
-			Mono<List<ResponseBFFVO.ServiceResponse>> serviceResponses = Mono.zip(requestsBff, respostas -> {
-				List<ResponseBFFVO.ServiceResponse> responseList = new ArrayList<>();
-				for (Object resposta : respostas) {
-					responseList.add((ResponseBFFVO.ServiceResponse) resposta);
-				}
-				return responseList;
-			});
+			swTotal.stop();
+			model.addAttribute("responseBFFVO", new ResponseBFFVO(requestsBff));  // Passa o VO para o template Thymeleaf
+			model.addAttribute("total",  swTotal.getTotalTimeMillis());
 
-			// Monta o VO ResponseBFFVO com os dados das respostas
-			return serviceResponses.map(responseList -> {
-				ResponseBFFVO responseBFFVO = new ResponseBFFVO(responseList);
-				model.addAttribute("responseBFFVO", responseBFFVO);  // Passa o VO para o template Thymeleaf
-				swTotal.stop();
-				model.addAttribute("total",  swTotal.getTotalTimeMillis());
-				return "home";  // Nome do template Thymeleaf
-			}).block();  // Aguarda a resposta para continuar com o fluxo
+			return "home";
 		}
 
 		private StopWatch getStopWatch(Integer i) {
@@ -90,8 +70,8 @@ public class ProvaConceitoAsItApplication {
 			return "bff" + i;
 		}
 
-		private static String getUrl(Integer i) {
-			String url = "/servico-" + i + "/resposta";
+		private String getUrl(Integer i) {
+			String url = this.wiremockUrl + "/servico-" + i + "/resposta";
 			return url;
 		}
 	}
