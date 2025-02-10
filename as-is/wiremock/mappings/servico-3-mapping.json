@@ -6,6 +6,6 @@
   "response": {
     "status": 200,
     "body": "Resposta mockada 3",
-    "fixedDelayMilliseconds": 2000
+    "fixedDelayMilliseconds": 5000
   }
 }
