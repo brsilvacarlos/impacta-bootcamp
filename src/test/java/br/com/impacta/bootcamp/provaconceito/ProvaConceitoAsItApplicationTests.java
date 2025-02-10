@@ -1,4 +1,4 @@
-package br.com.impacta.bootcamp.prova_conceito_as_it;
+package br.com.impacta.bootcamp.provaconceito;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

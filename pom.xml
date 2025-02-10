@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.impacta.bootcamp</groupId>
-	<artifactId>prova-conceito-as-it</artifactId>
+	<artifactId>prova-conceito</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>prova-conceito-as-it</name>
+	<name>prova-conceito</name>
 	<description>Projeto para prova de conceito As It</description>
 	<url/>
 	<licenses>
