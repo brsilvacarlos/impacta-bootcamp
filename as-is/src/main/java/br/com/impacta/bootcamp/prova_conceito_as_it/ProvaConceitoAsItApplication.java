@@ -41,7 +41,7 @@ public class ProvaConceitoAsItApplication {
 			swTotal.start();
 
 			// Realiza as requisições de maneira assíncrona para cada serviço mockado
-			IntStream.rangeClosed(1, 5).boxed().forEach(i -> {
+			IntStream.rangeClosed(1, 4).boxed().forEach(i -> {
 				StopWatch swBFF = getStopWatch(i);
 
 				requestsBff.add(
