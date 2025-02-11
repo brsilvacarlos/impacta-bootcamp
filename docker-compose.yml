@@ -1,27 +1,41 @@
 version: '3'
 
 services:
-  app-principal:
-    build:
-      context: .
-    depends_on:
-      - wiremock
-    networks:
-      - app-network
-    environment:
-      - WIREMOCK_URL=http://wiremock:8080  # A URL do WireMock
-    ports:
-      - "8081:8081"  # Expondo a porta 8080 da aplicação principal para o host
-
   wiremock:
-    image: wiremock/wiremock:2.35.0
+    image: wiremock/wiremock:3.11.0
     networks:
       - app-network
     ports:
       - "8080:8080"  # Expondo a porta 8080 do WireMock para o host
     volumes:
       - ./wiremock/mappings:/home/wiremock/mappings  # Onde ficam as definições dos mapeamentos
-      - ./wiremock/__files:/home/wiremock/__files  # Arquivos de resposta mockada
+    environment:
+      JAVA_OPTS: -Dfile.encoding=UTF-8
+    entrypoint: ["/docker-entrypoint.sh", "--global-response-templating", "--disable-gzip", "--verbose", ""]
+
+  db:
+    container_name: postgres-db
+    image: postgres:15
+    restart: always
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  web:
+    build:
+      context: .
+    depends_on:
+      - wiremock
+      - db
+    networks:
+      - app-network
+    ports:
+      - "8081:8081"
 
 networks:
   app-network:

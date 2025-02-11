@@ -24,4 +24,4 @@ COPY --from=build /app/target/prova-conceito-0.0.1-SNAPSHOT.jar /app/prova-conce
 EXPOSE 8080
 
 # Comando para rodar a aplicação quando o contêiner for iniciado
-ENTRYPOINT ["java", "-jar", "prova-conceito.jar"]
+ENTRYPOINT ["java", "-jar", "prova-conceito.jar", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"]

@@ -5,7 +5,7 @@
   },
   "response": {
     "status": 200,
-    "body": "Resposta mockada 2",
+    "body": "Resposta produto Cartao",
     "fixedDelayMilliseconds": 10000
   }
 }

@@ -5,7 +5,7 @@
   },
   "response": {
     "status": 200,
-    "body": "Resposta mockada 1",
+    "body": "Resposta produto Saldo",
     "fixedDelayMilliseconds": 10000
   }
 }
