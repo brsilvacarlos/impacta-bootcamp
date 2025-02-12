@@ -1,33 +1,74 @@
 <!DOCTYPE html>
 <html lang="pt" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consultar Serviços</title>
-</head>
-<body>
-<h1>Home Superapp Banco Integra</h1>
 
-<table border="1">
-    <thead>
-    <tr>
-        <th>Serviço</th>
-        <th>Resposta</th>
-        <th>Tempo (ms)</th>
-    </tr>
-    </thead>
-    <tbody>
-    <th:block th:each="serviceResponse : ${responseBFFVO.serviceResponses}">
-        <tr>
-            <td th:text="${serviceResponse.serviceName}">Serviço</td>
-            <td th:text="${serviceResponse.response}">Resposta</td>
-            <td th:text="${serviceResponse.responseTime}">Tempo</td>
-        </tr>
-    </th:block>
-    </tbody>
-</table>
+    <head>
+        <meta charset="UTF-8">
+        <title>SuperApp | Banco Integra</title>
 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href='https://fonts.googleapis.com/css?family=Ubuntu:400,700'
+              rel='stylesheet' type='text/css'>
+        <link href='/css/styles.css' rel='stylesheet' type='text/css'>
+    <body>
+        <div class="smart">
+            <div id="dettaglio">
+                <div id="sensore"></div>
+                <div id="microfono"></div>
+            </div>
+            <div id="acenzione-button"></div>
+            <div id="volume-su"></div>
+            <div id="volume-giu"></div>
+            <div id="schermo">
+                <div class="frame-posizione">
+                    <div id="header">
+                        <div class="wrap">
+                            <div id="menu" class="menu-responsive">
+                                <div class="nome-app">
+                                    <p>Banco Integra</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<p>Tempo carregamento página: <th:block th:text="${total}"></th:block> ms</p>
-</body>
+                    <main>
+                        <div class="produtos">
+                            <div class="produto">Saldo</div>
+                            <div class="produto">Cartao</div>
+                            <div class="produto">Campanha</div>
+                            <div class="produto">Menu</div>
+                        </div>
+                    </main>
+                </div>
+            </div>
+            <div id="bottone"></div>
+        </div>
+        <div class="estatisticas">
+            <h2>Estatisticas de carregamento</h2>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Serviço</th>
+                        <th>Resposta</th>
+                        <th>Tempo (ms)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <th:block th:each="serviceResponse : ${responseBFFVO.serviceResponses}">
+                        <tr>
+                            <td th:text="${serviceResponse.serviceName}">Serviço</td>
+                            <td th:text="${serviceResponse.response}">Resposta</td>
+                            <td th:text="${serviceResponse.responseTime}">Tempo</td>
+                        </tr>
+                    </th:block>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="2">Tempo carregamento página</th>
+                        <td><th:block th:text="${total}"></th:block> ms</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </body>
+
 </html>
